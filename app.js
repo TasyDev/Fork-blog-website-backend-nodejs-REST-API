@@ -28,12 +28,19 @@ const blogRoute = require('./routes/blog.route');
 // constants
 const app = express();
 
+// Serve uploaded files as public static assets
 app.use('/uploads', express.static('uploads'));
+
+// Parse incoming JSON requests (API bodies)
 app.use(express.json());
+
+// Parse HTML form submissions
 app.use(express.urlencoded({ extended: true }));
+
+// Allow requests from any origin (open CORS policy)
 app.use(cors({
     origin: '*'
-  }));
+}));
 
 // routes
 app.get('/', (req, res) => {
@@ -44,12 +51,13 @@ app.use('/user', userRoute);
 app.use('/category', categoryRoute);
 app.use('/blog', blogRoute);
 
-// handle wildcard route
-app.use(async(req, res, next) => {
-    next(createErrors.NotFound('This route does not exists!'));
+// Handles requests to non-existing routes (404 Not Found)
+app.use(async (req, res, next) => {
+    next(createErrors.NotFound('This route does not exist!'));
 });
 
-// handle errors
+
+// Global handle errors
 app.use((err, req, res, next) => {
     if (err.code === 'LIMIT_FILE_SIZE') {
         err.status = 400;

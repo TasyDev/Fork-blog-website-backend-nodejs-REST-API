@@ -1,11 +1,29 @@
-// imports
+// ===== External libraries =====
+
+// Express: used to create the server and define routes
 const express = require('express');
+
+/*
+ http-errors:
+ Used to handle HTTP errors in a cleaner way.
+
+ Before:
+   res.status(404).send("Not found");
+
+ After:
+   throw createError(404, "Not found");
+*/
 const createErrors = require('http-errors');
 
+// CORS: allows requests from different domains
+const cors = require('cors');
+
+// ===== Internal imports (from src) =====
+
+// API routes
 const userRoute = require('./routes/user.route');
 const categoryRoute = require('./routes/category.route');
 const blogRoute = require('./routes/blog.route');
-const cors = require('cors');
 
 // constants
 const app = express();
